@@ -14,7 +14,9 @@ app.get('/', (req,res,next) => {
 
 const start = async () => {
     try {
-        await connectDB();
+        await connectDB.connect(() => {
+          console.log("Connected to database...");
+        });
         app.listen(3000 || process.env.PORT, () => console.log("Server is listening on port"))
     } catch (error) {
         console.log(error)
