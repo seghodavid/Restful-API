@@ -1,18 +1,35 @@
 const sql = require("../config/db/connect");
 
 module.exports = class Quote {
-  constructor(quotesId, author, quote, userid) {
-    (this.quotesId = quotesId),
+  constructor(quoteId, author, quote, userId) {
+    (this.quoteId = quoteId),
       (this.author = author),
       (this.quote = quote),
-      this.userid = userid
+      this.userId = userId
   }
 
-  save() {}
+  save() {
+    return sql.execute('INSERT INTO quotes (author,quote,userId) VALUES (?,?,?)', [this.author,this.quote, this.userId])
+  }
 
-  static deleteById(id) {}
+  static deleteById(id) {
+     return sql.execute("DELETE FROM users WHERE quotes.quoteId = ?", [id]);
+  }
 
-  static findById(id) {}
+  static findById(id) {
+    return sql.execute("SELECT * FROM users WHERE quotes.quoteId = ?", [id]);
+  }
 
-  static findAll() {}
+  static findAll() {
+     return sql.execute("SELECT * FROM quotes");
+  }
+
+  static updateById(id,author,quote) {
+    return sql.execute("UPDATE users SET author = ?, quote = ? WHERE quotes.quoteId = ?", [
+      id,
+      author,
+      quote
+    ]);
+  }
+
 };

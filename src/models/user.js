@@ -14,7 +14,9 @@ module.exports = class User {
     ]);
   }
 
-  static deleteById(id) {}
+  static deleteById(id) {
+     return sql.execute('DELETE FROM users WHERE users.userId = ?', [id])
+  }
 
   static findById(id) {
     return sql.execute('SELECT * FROM users WHERE users.userId = ?', [id])
@@ -24,5 +26,7 @@ module.exports = class User {
     return sql.execute('SELECT * FROM users')
   }
 
-  static updateById(id) {}
+  static updateById(id, username) {
+    return sql.execute('UPDATE users SET username = ? WHERE users.userId = ?', [id, username])
+  }
 };
