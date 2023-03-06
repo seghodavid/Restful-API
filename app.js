@@ -3,6 +3,8 @@ require('dotenv').config()
 const express = require ('express')
 const connectDB = require("./src/config/db/connect");
 
+const userRouter = require('./src/routes/user')
+
 
 const app = express()
 
@@ -11,6 +13,8 @@ app.get('/', (req,res,next) => {
     res.send('<h1>Welcome to my Restful-API</h1>')
 })
 
+//routes
+app.use('/api/v1/auth', userRouter)
 
 const start = async () => {
     try {
