@@ -1,4 +1,4 @@
-const sql = require("../config/db/connect");
+const db = require("../config/db/connect");
 
 module.exports = class Quote {
   constructor(quoteId, author, quote, userId) {

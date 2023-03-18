@@ -3,7 +3,7 @@ const User = require("../../models/user");
 
 module.exports = (passport) => {
   passport.use(
-    "local-signup",
+    "create",
     new LocalStrategy(
       {
         usernameField: "username",
@@ -11,16 +11,16 @@ module.exports = (passport) => {
       },
       async (username, password, done) => {
         try {
-          // check if user exists
-          const userExists = await User.findOne(username);
-          if (userExists) {
-            return done(null, false);
-          }
           // Create a new user with the user data provided
           const hashedPassword = await User.hashPassword(password);
-          const user = await User.save( null, username, hashedPassword );
+          const user = new User(null,username, hashedPassword )
+          console.log(user)
+          await user.save()
+
+          console.log(user)
           return done(null, user);
         } catch (error) {
+          console.log(error)
           done(error);
         }
       }
@@ -36,11 +36,11 @@ module.exports = (passport) => {
       },
       async (username, password, done) => {
         try {
-          const user = await User.findOne(username);
+          const [user, _] = await User.findOne(username);
           if (!user) return done(null, false);
-          const isMatch = await user.comparePassword(password, user.password);
+          const userPassword = user[0].password
+          const isMatch = await User.comparePassword(password, userPassword);
           if (!isMatch) return done(null, false);
-          // if passwords match return user
           return done(null, user);
         } catch (error) {
           console.log(error);
@@ -49,4 +49,16 @@ module.exports = (passport) => {
       }
     )
   );
+
+
+//To be researched and understood in-depth 
+  passport.serializeUser(function (user, done) {
+    done(null, user);
+  });
+
+  passport.deserializeUser(function (user, done) {
+    done(null, user);
+  });
 };
+
+

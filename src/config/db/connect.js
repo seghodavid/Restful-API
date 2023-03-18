@@ -1,16 +1,13 @@
 const mysql = require("mysql2");
 
-const connectDB = 
- mysql.createConnection(
+const pool = 
+ mysql.createPool(
     {
       host: process.env.DATABASE_HOST,
-      port: 3306,
       user: process.env.DATABASE_USER,
-      password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE,
+      password: process.env.DATABASE_PASSWORD,
     },
  )
 
-
-
-module.exports = connectDB;
+module.exports = pool.promise();
