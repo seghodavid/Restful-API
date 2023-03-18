@@ -13,28 +13,22 @@ npm install && npm start
 
 #### Routers
 
-- 
-- 
+- auth.js
+- quote.js
 
 #### User Model
+Passport.js localStrategy
 
-Email Validation Regex
-
-```regex
-/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-```
 
 #### Register User
 
-- Validate - name, email, password - with MySql
+- Validate - username, password - with MySql
 - Hash Password (with bcryptjs)
 - Save User
--
-- 
 
 #### Login User
 
-- Validate - email, password - in controller
+- Validate - username, password - in controller
 - If email or password is missing, throw BadRequestError
 - Find User
 - Compare Passwords
@@ -55,5 +49,5 @@ Email Validation Regex
 - xss-clean
 - express-rate-limit
 
-Swagger UI
-
+Postman Documentation
+- coming soon...
