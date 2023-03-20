@@ -44,8 +44,8 @@ module.exports = class User {
 
   static updateById(id, username) {
     return db.execute("UPDATE users SET username = ? WHERE users.userId = ?", [
-      id,
       username,
+      id,
     ]);
   }
 

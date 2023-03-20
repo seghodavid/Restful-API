@@ -8,6 +8,7 @@ const cors = require("cors");
 const passport = require("passport");
 const notFoundMiddleware = require("./src/middlewares/not-found");
 const errorHandlerMiddleware = require("./src/middlewares/error-handler");
+const authRouter = require("./src/routes/auth");
 const userRouter = require("./src/routes/user");
 require("./src/config/passportjs/passportConfig")(passport);
 
@@ -33,7 +34,8 @@ app.get("/", (req, res, next) => {
 });
 
 //routes
-app.use("/api/v1/auth", userRouter);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/user", userRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

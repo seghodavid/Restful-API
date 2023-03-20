@@ -1,15 +1,16 @@
-const passport = require("passport");
 const express = require("express");
 const router = express.Router();
-const { registerUser, loginUser } = require("../controllers/user");
+const { getAUser, getAllUsers, updateUser, deleteUser } = require("../controllers/user");
 
 
 router
-  .route("/register")
-  .post(registerUser);
+  .route("/")
+  .get(getAllUsers);
 
 router
-  .route("/login")
-  .post(loginUser);
+  .route("/:userId")
+  .get(getAUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 module.exports = router;
