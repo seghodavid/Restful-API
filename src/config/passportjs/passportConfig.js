@@ -37,7 +37,8 @@ module.exports = (passport) => {
       async (username, password, done) => {
         try {
           const [user, _] = await User.findOne(username);
-          if (!user) return done(null, false);
+          
+          if (user.length === 0) return done(null, false);
           const userPassword = user[0].password
           const isMatch = await User.comparePassword(password, userPassword);
           if (!isMatch) return done(null, false);

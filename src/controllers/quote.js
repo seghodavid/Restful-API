@@ -9,9 +9,19 @@ const getAllQuotes = async (req, res, next) => {
   try {
     const [quotes, _] = await Quote.findAll();
 
+    const userId = req.user.userId
+
+    const userQuotes = []
+
+    quotes.forEach(quote => {
+      if(quote.userId === userId) {
+        userQuotes.push(quote)
+      }
+    })
+
     res.status(StatusCodes.OK).json({
       Status: "SUCCESS",
-      users: quotes,
+      users: userQuotes,
     });
   } catch (error) {
     next(error);
@@ -60,11 +70,11 @@ const updateQuote = async (req, res, next) => {
   try {
     const { author, quote } = req.body;
     const quoteId = req.params.quoteId
-    const quoteUser = await Quote.updateById(quoteId, author, quote);
+    const updatedQuote = await Quote.updateById(quoteId, author, quote);
 
      res.status(StatusCodes.OK).json({
        Status: "SUCCESS",
-       msg: `Update successful`,
+       msg: `Quote with ID ${quoteId} was successfully updated.`,
      });
 
   } catch (error) {
