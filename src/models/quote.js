@@ -9,23 +9,23 @@ module.exports = class Quote {
   }
 
   save() {
-    return sql.execute('INSERT INTO quotes (author,quote,userId) VALUES (?,?,?)', [this.author,this.quote, this.userId])
+    return db.execute('INSERT INTO quotes (author,quote,userId) VALUES (?,?,?)', [this.author,this.quote, this.userId])
   }
 
   static deleteById(id) {
-     return sql.execute("DELETE FROM users WHERE quotes.quoteId = ?", [id]);
+     return db.execute("DELETE FROM users WHERE quotes.quoteId = ?", [id]);
   }
 
   static findById(id) {
-    return sql.execute("SELECT * FROM users WHERE quotes.quoteId = ?", [id]);
+    return db.execute("SELECT * FROM users WHERE quotes.quoteId = ?", [id]);
   }
 
   static findAll() {
-     return sql.execute("SELECT * FROM quotes");
+     return db.execute("SELECT * FROM quotes");
   }
 
   static updateById(id,author,quote) {
-    return sql.execute("UPDATE users SET author = ?, quote = ? WHERE quotes.quoteId = ?", [
+    return db.execute("UPDATE users SET author = ?, quote = ? WHERE quotes.quoteId = ?", [
       id,
       author,
       quote

@@ -39,7 +39,8 @@ const loginUser = (req, res, next) => {
         return next(err);
       }
       const secretKey = process.env.JWT_SECRETKEY;
-      const token = jwt.sign({ userId: user.id }, secretKey);
+      
+      const token = jwt.sign({ userId: user[0].userId }, secretKey);
       return res.status(StatusCodes.ACCEPTED).json({
         Status: "SUCCESS",
         msg: `Welcome,have fun making and going through existing quotes`,

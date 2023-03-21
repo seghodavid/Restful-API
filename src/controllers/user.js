@@ -30,7 +30,7 @@ const getAllUsers = async (req, res, next) => {
 
 const getAUser = async (req, res, next) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.params.quoteId;
 
     const [user, _] = await User.findById(userId);
 
@@ -86,6 +86,7 @@ const deleteUser = async (req, res, next) => {
 
 
   //pending work...when a user is deleted, the userId of the next created user should take the deleted Id not an incremented id...
+  
 };
 
 module.exports = {

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { UnauthenticatedError } = require("../errors");
+const { UnauthenticatedError } = require("../config/errors");
 
 const isAuth = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -11,7 +11,8 @@ const isAuth = async (req, res, next) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRETKEY);
+    console.log(decoded)
 
     if (!decoded) {
       throw new UnauthenticatedError("Invalid Request");
@@ -21,6 +22,7 @@ const isAuth = async (req, res, next) => {
 
     next();
   } catch (error) {
+    console.log(error)
     throw new UnauthenticatedError("Authentication Invalid");
   }
 };
