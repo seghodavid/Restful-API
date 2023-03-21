@@ -21,7 +21,7 @@ const getAQuote = async (req, res, next) => {
   try {
      const quoteId = req.params.quoteId;
 
-     const [quote, _] = await User.findById(quoteId);
+     const [quote, _] = await Quote.findById(quoteId);
 
      if (!quote[0])
        throw new BadRequestError(`The quote with id ${quoteId} does not exist`);
@@ -37,19 +37,20 @@ const getAQuote = async (req, res, next) => {
 const createQuote = async (req, res, next) => {
   try {
       const { author, quote } = req.body;
-      const userId = req.user.userId
-      console.log(req.user)
 
+      const userId = req.user.userId
 
       const newQuote = new Quote(null, author, quote, userId);
 
+
       const result = await newQuote.save();
 
-      console.log(result)
+      const {quoteId, ...data} = newQuote
 
       res.status(StatusCodes.CREATED).json({
         Status: "SUCCESS",
-        msg: `Hello ${username}, your registration was successful`,
+        msg: `Quote creation was successful`,
+        data: data
       });
   } catch (error) {
     next(error);
@@ -57,14 +58,33 @@ const createQuote = async (req, res, next) => {
 };
 const updateQuote = async (req, res, next) => {
   try {
-    res.send("This route updates a new quote");
+    const { author, quote } = req.body;
+    const quoteId = req.params.quoteId
+    const quoteUser = await Quote.updateById(quoteId, author, quote);
+
+     res.status(StatusCodes.OK).json({
+       Status: "SUCCESS",
+       msg: `Update successful`,
+     });
+
   } catch (error) {
     next(error);
   }
 };
 const deleteQuote = async (req, res, next) => {
   try {
-    res.send("This route deletes a  quote");
+     const quoteId = req.params.quoteId;
+
+     const deletedQuote = await Quote.deleteById(quoteId);
+
+
+     if (!deleteQuote)
+       throw new BadRequestError(`The user with id ${quoteId} does not exist`);
+
+     res.status(StatusCodes.OK).json({
+       Status: "SUCCESS",
+       msg: `User with id ${quoteId} has been deleted successfully`,
+     });
   } catch (error) {
     next(error);
   }

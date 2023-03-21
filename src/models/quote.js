@@ -13,11 +13,11 @@ module.exports = class Quote {
   }
 
   static deleteById(id) {
-     return db.execute("DELETE FROM users WHERE quotes.quoteId = ?", [id]);
+     return db.execute("DELETE FROM quotes WHERE quotes.quoteId = ?", [id]);
   }
 
   static findById(id) {
-    return db.execute("SELECT * FROM users WHERE quotes.quoteId = ?", [id]);
+    return db.execute("SELECT * FROM quotes WHERE quotes.quoteId = ?", [id]);
   }
 
   static findAll() {
@@ -25,11 +25,10 @@ module.exports = class Quote {
   }
 
   static updateById(id,author,quote) {
-    return db.execute("UPDATE users SET author = ?, quote = ? WHERE quotes.quoteId = ?", [
-      id,
-      author,
-      quote
-    ]);
+    return db.execute(
+      "UPDATE quotes SET author = ?, quote = ? WHERE quotes.quoteId = ?",
+      [author, quote, id]
+    );
   }
 
 };

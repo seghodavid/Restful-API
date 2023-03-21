@@ -12,7 +12,6 @@ const isAuth = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRETKEY);
-    console.log(decoded)
 
     if (!decoded) {
       throw new UnauthenticatedError("Invalid Request");
@@ -22,7 +21,7 @@ const isAuth = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     throw new UnauthenticatedError("Authentication Invalid");
   }
 };

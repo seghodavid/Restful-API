@@ -13,12 +13,10 @@ const registerUser = async (req, res, next) => {
 
     const result = await user.save();
 
-    res
-      .status(StatusCodes.CREATED)
-      .json({
-        Status: "SUCCESS",
-        msg: `Hello ${username}, your registration was successful`,
-      });
+    res.status(StatusCodes.CREATED).json({
+      Status: "SUCCESS",
+      msg: `Hello ${username}, your registration was successful`,
+    });
   } catch (error) {
     next(error);
   }
@@ -39,8 +37,9 @@ const loginUser = (req, res, next) => {
         return next(err);
       }
       const secretKey = process.env.JWT_SECRETKEY;
-      
+
       const token = jwt.sign({ userId: user[0].userId }, secretKey);
+      
       return res.status(StatusCodes.ACCEPTED).json({
         Status: "SUCCESS",
         msg: `Welcome,have fun making and going through existing quotes`,
