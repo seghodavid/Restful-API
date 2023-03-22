@@ -17,8 +17,6 @@ const getAllUsers = async (req, res, next) => {
       newUsers.push(data)
     })
 
-    console.log(newUsers)
-
     res.status(StatusCodes.OK).json({
       Status: "SUCCESS",
       users: newUsers
