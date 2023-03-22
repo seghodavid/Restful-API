@@ -4,7 +4,8 @@
   "description": "Basic restful api to start project building journey",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
+    "test:watch": "mocha --watch",
     "start": "node app.js",
     "start:dev": "nodemon app.js"
   },
@@ -27,6 +28,9 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.21"
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "nodemon": "^2.0.21",
+    "supertest": "^6.3.3"
   }
 }
