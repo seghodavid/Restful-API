@@ -38,9 +38,8 @@ Passport.js localStrategy
 
 #### Errors
 
-- Validation Errors
-- Duplicate (Email)
-- Cast Error
+- Duplicate (Username)
+
 
 #### Security
 
