@@ -45,6 +45,16 @@ describe("It should test the API entry point", function () {
     token = response.body.token;
   });
 
+  it('It should return status code 200 for GET /api/v1/user with authentication', async () => {
+    const response = await request
+      .get('/api/v1/user')
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200);
+
+    assert.strictEqual(response.status, 200);
+  });
   it('It should return status code 200 for GET /api/v1/quote with authentication', async () => {
     const response = await request
       .get('/api/v1/quote')
