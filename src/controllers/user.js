@@ -28,7 +28,7 @@ const getAllUsers = async (req, res, next) => {
 
 const getAUser = async (req, res, next) => {
   try {
-    const userId = req.params.quoteId;
+    const userId = req.params.userId;
 
     const [user, _] = await User.findById(userId);
 
@@ -68,7 +68,6 @@ const deleteUser = async (req, res, next) => {
 
      const deletedUser = await User.deleteById(userId);
 
-     console.log(deletedUser)
 
      if (!deleteUser)
        throw new BadRequestError(`The user with id ${userId} does not exist`);

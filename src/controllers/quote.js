@@ -121,7 +121,6 @@ const deleteQuote = async (req, res, next) => {
 
     const deletedQuote = await Quote.deleteById(quoteId);
 
-    console.log(deletedQuote);
 
     if (deletedQuote.affectedRows === 0)
       throw new BadRequestError(`The quote with id ${quoteId} does not exist`);

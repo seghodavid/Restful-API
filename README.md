@@ -49,4 +49,4 @@ Passport.js localStrategy
 - express-rate-limit
 
 Postman Documentation
-- coming soon...
+- [View documentation here =>](https://documenter.getpostman.com/view/17168240/2s93RNyaED)
