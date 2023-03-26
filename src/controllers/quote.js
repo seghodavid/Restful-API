@@ -7,34 +7,24 @@ const {
 
 const getAllQuotes = async (req, res, next) => {
   try {
-    const search_query = req.query.search_query || " ";
-    const [quotes, _] = await Quote.findAll(search_query);
+    const searchQuery = req.query.searchQuery || " ";
+    const [quotes, _] = await Quote.findAll(searchQuery);
 
     const { pageNum = 1, itemsPerPage = 10 } = req.query;
 
     //pagination
+     let paginatedQuotes;
     if (pageNum) {
-      const paginatedQuotes = await Quote.paginateQuotes(pageNum, itemsPerPage);
-
-     return res.status(StatusCodes.OK).json({
-       Status: "SUCCESS",
-       quotes: paginatedQuotes[0],
-     });
+      paginatedQuotes = await Quote.paginateQuotes(pageNum, itemsPerPage);
     }
 
     const userId = req.user.userId;
 
-    const userQuotes = [];
-
-    quotes.forEach((quote) => {
-      if (quote.userId === userId) {
-        userQuotes.push(quote);
-      }
-    });
+    const userQuotes = quotes.filter((quote) => quote.userId === userId);
 
     res.status(StatusCodes.OK).json({
       Status: "SUCCESS",
-      quotes: userQuotes,
+      quotes: paginatedQuotes ? paginatedQuotes[0] : userQuotes,
     });
   } catch (error) {
     next(error);
@@ -82,7 +72,6 @@ const updateQuote = async (req, res, next) => {
   try {
     const { author, quote } = req.body;
     const quoteId = req.params.quoteId;
-
     const userId = req.user.userId;
 
     const [quoteData, _] = await Quote.findById(quoteId);

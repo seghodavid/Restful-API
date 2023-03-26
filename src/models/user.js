@@ -1,41 +1,30 @@
 const db = require("../config/db/connect");
 const bcrypt = require("bcryptjs");
 
-module.exports = class User {
+class User {
   constructor(userId, username, password) {
-    (this.userId = userId),
-      (this.username = username),
-      (this.password = password);
+    this.userId = userId;
+    this.username = username;
+    this.password = password;
   }
 
   async save() {
-    const sql = "INSERT INTO users (username,password) VALUES (?,?)";
-
-    // const [rows] = await db.execute("SELECT COUNT(*) as count FROM users WHERE username = ?", [this.username])
-    // const {count} =rows[0]
-    // if (count > 0) {
-    //   // throw new Error(`Username ${this.username} is already in use, please try a different username`)
-    // }
-    const [newUser, _ ]= await db.execute(sql, [
-      this.username,
-      this.password,
-    ]);
-
-     return newUser; 
+    const sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+    const hashedPassword = await User.hashPassword(this.password);
+    const [newUser] = await db.execute(sql, [this.username, hashedPassword]);
+    return newUser;
   }
 
   static deleteById(id) {
-    return db.execute("DELETE FROM users WHERE users.userId = ?", [id]);
+    return db.execute("DELETE FROM users WHERE userId = ?", [id]);
   }
 
   static findById(id) {
-    return db.execute("SELECT * FROM users WHERE users.userId = ?", [id]);
+    return db.execute("SELECT * FROM users WHERE userId = ?", [id]);
   }
 
   static findOne(username) {
-    return db.execute("SELECT * FROM users WHERE users.username = ?", [
-      username,
-    ]);
+    return db.execute("SELECT * FROM users WHERE username = ?", [username]);
   }
 
   static findAll() {
@@ -43,7 +32,7 @@ module.exports = class User {
   }
 
   static updateById(id, username) {
-    return db.execute("UPDATE users SET username = ? WHERE users.userId = ?", [
+    return db.execute("UPDATE users SET username = ? WHERE userId = ?", [
       username,
       id,
     ]);
@@ -55,6 +44,8 @@ module.exports = class User {
   }
 
   static async comparePassword(password, userPassword) {
-    return await bcrypt.compare(password,userPassword);
+    return await bcrypt.compare(password, userPassword);
   }
-};
+}
+
+module.exports = User;

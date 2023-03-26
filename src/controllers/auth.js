@@ -7,32 +7,34 @@ const registerUser = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    const hashedPassword = await User.hashPassword(password);
-
-    const user = new User(null, username, hashedPassword);
+    const user = new User(null, username, password);
 
     const result = await user.save();
 
     res.status(StatusCodes.CREATED).json({
-      Status: "SUCCESS",
-      msg: `Hello ${username}, your registration was successful`,
+      status: "success",
+      message: `Hello ${username}, your registration was successful`,
     });
   } catch (error) {
     next(error);
   }
 };
 
-const loginUser = (req, res, next) => {
-      const secretKey = process.env.JWT_SECRETKEY;
+const loginUser = async (req, res, next) => {
+  try {
+    const secretKey = process.env.JWT_SECRETKEY;
 
-      const token = jwt.sign({ userId: req.user[0].userId }, secretKey);
+    const token = jwt.sign({ userId: req.user[0].userId }, secretKey);
 
-      return res.status(StatusCodes.ACCEPTED).json({
-        Status: "SUCCESS",
-        msg: `Welcome,have fun making and going through existing quotes`,
-        token: token,
-      });
-}
+    res.status(StatusCodes.ACCEPTED).json({
+      status: "success",
+      message: `Welcome, have fun making and going through existing quotes`,
+      token,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   registerUser,

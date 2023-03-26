@@ -1,39 +1,42 @@
 const db = require("../config/db/connect");
 
-module.exports = class Quote {
+class Quote {
   constructor(quoteId, author, quote, userId) {
-    (this.quoteId = quoteId),
-      (this.author = author),
-      (this.quote = quote),
-      (this.userId = userId);
+    this.quoteId = quoteId;
+    this.author = author;
+    this.quote = quote;
+    this.userId = userId;
   }
 
-  save() {
-    return db.execute(
-      "INSERT INTO quotes (author,quote,userId) VALUES (?,?,?)",
-      [this.author, this.quote, this.userId]
-    );
+  async save() {
+    const sql = "INSERT INTO quotes (author, quote, userId) VALUES (?, ?, ?)";
+    const [result] = await db.execute(sql, [
+      this.author,
+      this.quote,
+      this.userId,
+    ]);
+    return this;
   }
 
   static deleteById(id) {
-    return db.execute("DELETE FROM quotes WHERE quotes.quoteId = ?", [id]);
+    const sql = "DELETE FROM quotes WHERE quoteId = ?";
+    return db.execute(sql, [id]);
   }
 
   static findById(id) {
-    return db.execute("SELECT * FROM quotes WHERE quotes.quoteId = ?", [id]);
+    const sql = "SELECT * FROM quotes WHERE quoteId = ?";
+    return db.execute(sql, [id]);
   }
 
-  static findAll(search_query) {
-    return db.execute(
-      `SELECT * FROM quotes WHERE quote LIKE "%${search_query}%" OR author LIKE "%${search_query}%"`
-    );
+  static findAll(searchQuery) {
+    const sql = `SELECT * FROM quotes WHERE quote LIKE ? OR author LIKE ?`;
+    const params = [`%${searchQuery}%`, `%${searchQuery}%`];
+    return db.execute(sql, params);
   }
 
   static updateById(id, author, quote) {
-    return db.execute(
-      "UPDATE quotes SET author = ?, quote = ? WHERE quotes.quoteId = ?",
-      [author, quote, id]
-    );
+    const sql = "UPDATE quotes SET author = ?, quote = ? WHERE quoteId = ?";
+    return db.execute(sql, [author, quote, id]);
   }
 
   static paginateQuotes(pageNum, itemsPerPage) {
@@ -42,3 +45,5 @@ module.exports = class Quote {
     return db.execute(sql);
   }
 };
+
+module.exports =  Quote

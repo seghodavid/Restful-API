@@ -9,18 +9,12 @@ const getAllUsers = async (req, res, next) => {
   try {
     const [users, _] = await User.findAll()
 
-    const newUsers = []
+    const newUsers = users.map(({ password, ...data }) => data);
 
-    users.forEach(user => {
-      const {password, ...data } = user
-
-      newUsers.push(data)
-    })
-
-    res.status(StatusCodes.OK).json({
-      Status: "SUCCESS",
-      users: newUsers
-    });
+   res.status(StatusCodes.OK).json({
+     status: "success",
+     users: newUsers,
+   });
   } catch (error) {
     next(error);
   }
@@ -28,7 +22,7 @@ const getAllUsers = async (req, res, next) => {
 
 const getAUser = async (req, res, next) => {
   try {
-    const userId = req.params.userId;
+    const { userId } = req.params;;
 
     const [user, _] = await User.findById(userId);
 
@@ -37,10 +31,10 @@ const getAUser = async (req, res, next) => {
 
     const {password, ...data} = user[0]
     
-    res.status(StatusCodes.OK).json({
-      Status: "SUCCESS",
-      user: data,
-    });
+     res.status(StatusCodes.OK).json({
+       status: "success",
+       user: data,
+     });
   } catch (error) {
     next(error);
   }
@@ -49,13 +43,13 @@ const getAUser = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const {username} = req.body
-    const userId = req.params.userId
-    const updatedUser = await User.updateById(userId, username)
+    const { userId } = req.params;
+     await User.updateById(userId, { username });
 
-    res.status(StatusCodes.OK).json({
-      Status: "SUCCESS",
-      msg: `Hello ${username},your username update was successful`,
-    });
+     res.status(StatusCodes.OK).json({
+       status: "success",
+       message: `Hello ${username}, your username update was successful`,
+     });
 
   } catch (error) {
     next(error)
@@ -64,26 +58,25 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
-     const userId = req.params.userId;
+    const { userId } = req.params;
 
-     const deletedUser = await User.deleteById(userId);
+    const deletedUser = await User.deleteById(userId);
 
 
-     if (!deleteUser)
-       throw new BadRequestError(`The user with id ${userId} does not exist`);
+        if (!deletedUser)
+          throw new BadRequestError(
+            `The user with id ${userId} does not exist`
+          );
 
 
      res.status(StatusCodes.OK).json({
-       Status: "SUCCESS",
-       msg: `User with id ${userId} has been deleted successfully`,
+       status: "success",
+       message: `User with id ${userId} has been deleted successfully`,
      });
   } catch (error) {
     next(error)
-  } 
+  }
 
-
-  //pending work...when a user is deleted, the userId of the next created user should take the deleted Id not an incremented id...
-  
 };
 
 module.exports = {
